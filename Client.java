@@ -155,7 +155,7 @@ public class Client extends JFrame {
         int okCxl = JOptionPane.showConfirmDialog(null, pinField, isNuovoAccount ? "Scegli un PIN (es. 12345):" : "Inserisci il tuo PIN:", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (okCxl != JOptionPane.OK_OPTION) return;
         String pin = new String(pinField.getPassword());
-        
+
         try {
             int port = Integer.parseInt(portStr);
             SwingUtilities.invokeLater(() -> {

@@ -8,7 +8,26 @@ public class progetto_demi_67 {
 
     // Nome del file che funge da database
     private static final String NOME_FILE = "database.txt";
-
+    public static String creaIban(String file) {
+    	String nuovoIban = "IT" + (int)(Math.random() * 90000) + 10000;
+        boolean giusto=true;
+        try (BufferedReader readerFile = new BufferedReader(new FileReader(NOME_FILE))) {
+            String linea;
+            while ((linea = readerFile.readLine()) != null) {
+                String[] dati = linea.split(",");
+                if (dati.length == 4) {
+                    String iban = dati[2].trim();
+                    if(nuovoIban.equals(iban)) {giusto=false; break;} 	
+                }
+            }
+            if(giusto)
+            	return nuovoIban;
+            else 
+            	return creaIban(file);
+        } catch (IOException | NumberFormatException e) {
+        	return ("Errore lettura database: " + e.getMessage());
+        }
+    }
     public static void main(String[] args) {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader tastiera = new BufferedReader(input);
@@ -34,21 +53,21 @@ public class progetto_demi_67 {
                 BufferedReader inDalClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintStream outVersoClient = new PrintStream(socket.getOutputStream());
 
-                //outVersoClient.println("Inserisci il tuo NOME (oppure scrivi 'NUOVO' per registrarti):");
+                outVersoClient.println("");
                 String nomeRicevuto = inDalClient.readLine();
 
                 ContoDati conto = null;
 
                 // --- GESTIONE NUOVO ACCOUNT ---
                 if ("NUOVO".equalsIgnoreCase(nomeRicevuto)) {
-                    outVersoClient.println("Inserisci il NOME per il nuovo account:");
+                    outVersoClient.println("");
                     String nuovoNome = inDalClient.readLine();
 
-                    outVersoClient.println("Inserisci il PIN per il nuovo account:");
+                    outVersoClient.println("");
                     String nuovoPin = inDalClient.readLine();
 
                     // Genera un IBAN finto casuale
-                    String nuovoIban = "IT" + (int)(Math.random() * 90000) + 10000;
+                    String nuovoIban=creaIban(NOME_FILE);
                     
                     // Salva sul file database.txt
                     try (FileWriter fw = new FileWriter(NOME_FILE, true);
@@ -62,7 +81,7 @@ public class progetto_demi_67 {
                 } 
                 // --- GESTIONE LOGIN NORMALE ---
                 else {
-                    outVersoClient.println("Inserisci il PIN di accesso:");
+                    outVersoClient.println("");
                     String pinRicevuto = inDalClient.readLine();
                     conto = eseguiLogin(nomeRicevuto, pinRicevuto, NOME_FILE);
                 }
