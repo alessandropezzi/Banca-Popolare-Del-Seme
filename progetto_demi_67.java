@@ -6,7 +6,7 @@ import java.io.*;
 
 public class progetto_demi_67 {
 
-    // Nome del file che funge da database
+    // File
     private static final String NOME_FILE = "database.txt";
     public static String creaIban(String file) {
     	String nuovoIban = "IT" + (int)(Math.random() * 90000) + 10000;
@@ -58,7 +58,7 @@ public class progetto_demi_67 {
 
                 ContoDati conto = null;
 
-                // --- GESTIONE NUOVO ACCOUNT ---
+                //nuvo account
                 if ("NUOVO".equalsIgnoreCase(nomeRicevuto)) {
                     outVersoClient.println("");
                     String nuovoNome = inDalClient.readLine();
@@ -69,7 +69,7 @@ public class progetto_demi_67 {
                     // Genera un IBAN finto casuale
                     String nuovoIban=creaIban(NOME_FILE);
                     
-                    // Salva sul file database.txt
+                    // Salva sul file 
                     try (FileWriter fw = new FileWriter(NOME_FILE, true);
                          BufferedWriter bw = new BufferedWriter(fw)) {
                         bw.write(nuovoNome + "," + nuovoPin + "," + nuovoIban + ",0.0");
@@ -79,14 +79,14 @@ public class progetto_demi_67 {
                     conto = new ContoDati(nuovoNome, nuovoPin, nuovoIban, 0.0);
                     System.out.println("Nuovo account creato per " + nuovoNome);
                 } 
-                // --- GESTIONE LOGIN NORMALE ---
+                // loggin normalòe
                 else {
                     outVersoClient.println("");
                     String pinRicevuto = inDalClient.readLine();
                     conto = eseguiLogin(nomeRicevuto, pinRicevuto, NOME_FILE);
                 }
 
-                // --- AVVIO DEL THREAD SE L'UTENTE E' VALIDO ---
+                //avvio thread
                 if (conto != null) {
                     outVersoClient.println("Accesso effettuato! Benvenuto " + conto.nome + ". IBAN: " + conto.iban);
                     Figlio f = new Figlio(socket, i, inDalClient, outVersoClient, conto);
@@ -105,7 +105,7 @@ public class progetto_demi_67 {
     
 
     /**
-     * Legge il file e restituisce un oggetto ContoDati se le credenziali sono corrette
+     ******** Legge il file e restituisce un oggetto ContoDati se le credenziali sono corrette
      */
     private static ContoDati eseguiLogin(String nomeUtente, String pinUtente, String file) {
         if (nomeUtente == null || pinUtente == null) return null;
@@ -166,11 +166,11 @@ public class progetto_demi_67 {
     }
 }
 
-// ---------------------------------------------------------
-// CLASSI DI SUPPORTO (Devono stare fuori dal main!)
-// ---------------------------------------------------------
 
-// Classe di supporto per trasportare i dati del conto
+// classi di supporto
+
+
+
 class ContoDati {
     String nome;
     String pin;
@@ -195,7 +195,7 @@ class Figlio extends Thread {
     ContoDati conto; 
     boolean connesso = true;
 
-    // Costruttore con i 5 parametri corretti
+    
     public Figlio(Socket socket, int i, BufferedReader datin, PrintStream out, ContoDati conto) {
         this.socket = socket;
         this.i = i;
