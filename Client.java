@@ -13,7 +13,7 @@ public class Client extends JFrame {
     private JTextField campoImporto;
     private JButton btnSaldo, btnDeposita, btnPreleva, btnEsci;
 
-    // Aggiunto un parametro booleano per sapere se è una registrazione
+    // Aggiunto un parametro per sapere se è registrazione
     public Client(String ip, int port, String nome, String pin, boolean isNuovoAccount) {
         setTitle(isNuovoAccount ? "Client Bancomat - Nuovo Account" : "Client Bancomat");
         setSize(600, 400);
@@ -89,7 +89,7 @@ public class Client extends JFrame {
                 out.println(pin);
             }
 
-            // Avvio del Thread per l'ascolto continuo
+            // Avvio del Thread
             new Thread(() -> {
                 try {
                     String rispostaServer;
